@@ -69,7 +69,7 @@ A API utiliza um banco de dados MySQL, com o esquema `loja_vendas`, que contém 
 
 ## Contato
 
-Dúvidas e sugestões: [seu-email@exemplo.com]
+Dúvidas e sugestões: [vssoliveir@gmail.com]
 
 ---
 
