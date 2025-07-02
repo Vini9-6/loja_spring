@@ -1,6 +1,13 @@
 package com.loja.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Produtos")
@@ -9,16 +16,16 @@ public class Produto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, length = 100)
+    @Column(name = "Nome", nullable = false, length = 100)
     private String nome;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "Descricao", columnDefinition = "TEXT")
     private String descricao;
 
-    @Column(nullable = false)
+    @Column(name = "PrecoUnitario", nullable = false)
     private Double precoUnitario;
 
-    @Column(nullable = false)
+    @Column(name = "QuantidadeEstoque", nullable = false)
     private Integer quantidadeEstoque = 0;
 
     @ManyToOne
