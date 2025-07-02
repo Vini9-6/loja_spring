@@ -1,0 +1,15 @@
+com\loja\model\Fornecedor.class
+com\loja\repository\ItemVendaRepository.class
+com\loja\model\Categoria.class
+com\loja\model\Venda.class
+com\loja\model\ItemVenda.class
+com\loja\model\Produto.class
+com\loja\model\Cliente.class
+com\loja\repository\ProdutoRepository.class
+com\loja\repository\FornecedorRepository.class
+com\loja\repository\VendaRepository.class
+com\loja\repository\FuncionarioRepository.class
+com\loja\repository\CategoriaRepository.class
+com\loja\LojaSpringApplication.class
+com\loja\model\Funcionario.class
+com\loja\repository\ClienteRepository.class
