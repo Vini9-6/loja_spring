@@ -29,7 +29,7 @@ A API utiliza um banco de dados MySQL, com o esquema `loja_vendas`, que contém 
 - **MySQL** como banco de dados relacional
 - **Maven** para gerenciamento de dependências
 - **Spring Web** para criação de endpoints REST
-- **Lombok** para simplificação do código (opcional)
+
 
 ---
 
