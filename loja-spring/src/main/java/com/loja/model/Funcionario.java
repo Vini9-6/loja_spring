@@ -8,19 +8,19 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Funcionarios")
+@Table(name = "funcionarios")
 public class Funcionario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, length = 100)
+    @Column(name = "nome", nullable = false, length = 100)
     private String nome;
 
-    @Column(length = 50)
+    @Column(name = "cargo", length = 50)
     private String cargo;
 
-    @Column
+    @Column(name = "salario")
     private Double salario;
 
     // Getters e Setters
