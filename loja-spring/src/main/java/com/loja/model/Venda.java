@@ -1,31 +1,33 @@
 package com.loja.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "Vendas")
+@Table(name = "vendas")
 public class Venda {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "DataVenda")
+    @Column(name = "data_venda")
     private LocalDateTime dataVenda;
 
     @ManyToOne
-    @JoinColumn(name = "ID_Cliente", nullable = false)
+    @JoinColumn(name = "id_cliente", nullable = false)
     private Cliente cliente;
 
-    @Column(name = "ValorTotal")
+    @Column(name = "valor_total")
     private Double valorTotal = 0.0;
 
     @ManyToOne
-    @JoinColumn(name = "ID_Funcionario")
+    @JoinColumn(name = "id_funcionario")
     private Funcionario funcionario;
 
     @OneToMany(mappedBy = "venda", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<ItemVenda> itens;
 
     // Getters e Setters
