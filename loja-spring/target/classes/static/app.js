@@ -9,14 +9,24 @@ async function fetchAPI(endpoint, options = {}) {
 async function carregarProdutos() {
     try {
         const produtos = await fetchAPI('/api/produtos');
+        const categorias = await fetchAPI('/api/categorias');
         const div = document.getElementById('produtos-list');
-        div.innerHTML = produtos.map(p =>
-            `<div><b>${p.nome}</b> - Estoque: ${p.quantidadeEstoque} - R$ ${p.precoUnitario.toFixed(2)}
-            <button onclick='abrirModalProduto(${JSON.stringify(p)})'>Editar</button>
-            <button onclick='removerProduto(${p.id})'>Remover</button>
-            <button onclick='verDetalhesProduto(${JSON.stringify(p)})'>Detalhes</button>
-            </div>`
-        ).join('');
+        let html = '';
+        categorias.forEach(cat => {
+            const prods = produtos.filter(p => p.categoria && p.categoria.id === cat.id);
+            if (prods.length > 0) {
+                html += `<div style='margin-bottom:1.5rem;'><h3 style='color:#4e9ed4;'>${cat.nome}</h3>`;
+                html += prods.map(p =>
+                    `<div><b>${p.nome}</b> - Estoque: ${p.quantidadeEstoque} - R$ ${p.precoUnitario.toFixed(2)}
+                    <button onclick='abrirModalProduto(${JSON.stringify(p)})'>Editar</button>
+                    <button onclick='removerProduto(${p.id})'>Remover</button>
+                    <button onclick='verDetalhesProduto(${JSON.stringify(p)})'>Detalhes</button>
+                    </div>`
+                ).join('');
+                html += '</div>';
+            }
+        });
+        div.innerHTML = html || 'Nenhum produto cadastrado.';
     } catch (e) {
         document.getElementById('produtos-list').innerText = 'Erro ao carregar produtos.';
     }
@@ -219,15 +229,36 @@ async function carregarRelatorios() {
 }
 
 // Funções para modal de produto
-function abrirModalProduto(produto = null) {
-    document.getElementById('modal-produto').style.display = 'flex';
-    document.getElementById('modal-produto-title').innerText = produto ? 'Editar Produto' : 'Adicionar Produto';
-    document.getElementById('produto-id').value = produto ? produto.id : '';
-    document.getElementById('produto-nome').value = produto ? produto.nome : '';
-    document.getElementById('produto-descricao').value = produto ? produto.descricao : '';
-    document.getElementById('produto-preco').value = produto ? produto.precoUnitario : '';
-    document.getElementById('produto-estoque').value = produto ? produto.quantidadeEstoque : '';
+// Carregar categorias no select do formulário de produto
+async function preencherSelectCategorias() {
+    const select = document.getElementById('produto-categoria');
+    select.innerHTML = '<option value="">Selecione</option>';
+    try {
+        const categorias = await fetchAPI('/api/categorias');
+        categorias.forEach(cat => {
+            const opt = document.createElement('option');
+            opt.value = cat.id;
+            opt.textContent = cat.nome;
+            select.appendChild(opt);
+        });
+    } catch (e) {
+        select.innerHTML = '<option value="">Erro ao carregar categorias</option>';
+    }
 }
+
+function abrirModalProduto(produto = null) {
+    preencherSelectCategorias().then(() => {
+        document.getElementById('modal-produto').style.display = 'flex';
+        document.getElementById('modal-produto-title').innerText = produto ? 'Editar Produto' : 'Adicionar Produto';
+        document.getElementById('produto-id').value = produto ? produto.id : '';
+        document.getElementById('produto-nome').value = produto ? produto.nome : '';
+        document.getElementById('produto-descricao').value = produto ? produto.descricao : '';
+        document.getElementById('produto-preco').value = produto ? produto.precoUnitario : '';
+        document.getElementById('produto-estoque').value = produto ? produto.quantidadeEstoque : '';
+        document.getElementById('produto-categoria').value = produto && produto.categoria ? produto.categoria.id : '';
+    });
+}
+
 function fecharModalProduto() {
     document.getElementById('modal-produto').style.display = 'none';
 }
@@ -242,7 +273,8 @@ document.getElementById('form-produto').onsubmit = async function (e) {
         nome: document.getElementById('produto-nome').value,
         descricao: document.getElementById('produto-descricao').value,
         precoUnitario: parseFloat(document.getElementById('produto-preco').value),
-        quantidadeEstoque: parseInt(document.getElementById('produto-estoque').value)
+        quantidadeEstoque: parseInt(document.getElementById('produto-estoque').value),
+        categoria: { id: parseInt(document.getElementById('produto-categoria').value) }
     };
     try {
         if (id) {
