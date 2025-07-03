@@ -1,4 +1,4 @@
-# API Loja Vendas
+# API Loja SpringBoot
 
 Este projeto é uma **API RESTful** desenvolvida em **Java** com **Spring Boot** para gerenciar vendas, estoque e cadastro de uma loja. Inclui backend completo, integração com MySQL e frontend minimalista (HTML, CSS, JS) para facilitar testes e uso.
 
