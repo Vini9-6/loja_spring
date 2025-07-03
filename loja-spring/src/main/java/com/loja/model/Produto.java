@@ -10,30 +10,32 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Produtos")
+@Table(name = "produtos")
 public class Produto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "Nome", nullable = false, length = 100)
+    @Column(name = "nome", nullable = false, length = 100)
     private String nome;
 
-    @Column(name = "Descricao", columnDefinition = "TEXT")
+    @Column(name = "descricao", columnDefinition = "TEXT")
     private String descricao;
 
-    @Column(name = "PrecoUnitario", nullable = false)
+    @Column(name = "preco_unitario", nullable = false)
     private Double precoUnitario;
 
-    @Column(name = "QuantidadeEstoque", nullable = false)
+    @Column(name = "quantidade_estoque", nullable = false)
     private Integer quantidadeEstoque = 0;
 
     @ManyToOne
-    @JoinColumn(name = "ID_Categoria")
+    @JoinColumn(name = "id_categoria")
+    @com.fasterxml.jackson.annotation.JsonIgnoreProperties("produtos")
     private Categoria categoria;
 
     @ManyToOne
-    @JoinColumn(name = "ID_Fornecedor")
+    @JoinColumn(name = "id_fornecedor")
+    @com.fasterxml.jackson.annotation.JsonIgnoreProperties("produtos")
     private Fornecedor fornecedor;
 
     // Getters e Setters
