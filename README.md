@@ -79,9 +79,9 @@ Oferecer um sistema robusto para:
   ```
 - Ou execute a classe principal na sua IDE
 
-### 4. Acessar o Frontend Minimalista
+### 4. Acessar o Frontend
 
-- Após iniciar o backend, abra o arquivo `src/main/resources/static/index.html` no navegador
+- Após iniciar o backend, abra o arquivo `src/main/resources/static/index.html` no navegador ou [http://localhost:8080](http://localhost:8080)
 - O frontend consome os endpoints REST e permite testar cadastros, edições e consultas
 - Certifique-se de preencher todos os campos obrigatórios (categoria e fornecedor ao cadastrar produto)
 
