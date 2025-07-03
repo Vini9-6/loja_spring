@@ -3,24 +3,25 @@ package com.loja.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "ItensVenda")
+@Table(name = "itens_venda")
 public class ItemVenda {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "ID_Venda", nullable = false)
+    @JoinColumn(name = "id_venda", nullable = false)
+    @com.fasterxml.jackson.annotation.JsonBackReference
     private Venda venda;
 
     @ManyToOne
-    @JoinColumn(name = "ID_Produto", nullable = false)
+    @JoinColumn(name = "id_produto", nullable = false)
     private Produto produto;
 
-    @Column(nullable = false)
+    @Column(name = "quantidade", nullable = false)
     private Integer quantidade = 1;
 
-    @Column(nullable = false)
+    @Column(name = "preco_unitario", nullable = false)
     private Double precoUnitarioVenda;
 
     // Getters e Setters
