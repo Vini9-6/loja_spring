@@ -8,22 +8,22 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Clientes")
+@Table(name = "clientes")
 public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, length = 100)
+    @Column(name = "nome", nullable = false, length = 100)
     private String nome;
 
-    @Column(length = 200)
+    @Column(name = "endereco", length = 200)
     private String endereco;
 
-    @Column(length = 20)
+    @Column(name = "telefone", length = 20)
     private String telefone;
 
-    @Column(length = 100)
+    @Column(name = "email", length = 100)
     private String email;
 
     // Getters e Setters
