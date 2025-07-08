@@ -1,5 +1,6 @@
 package com.loja.model;
 
+// entidade produto
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,31 +15,31 @@ import jakarta.persistence.Table;
 public class Produto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer id; // id do produto
 
     @Column(name = "nome", nullable = false, length = 100)
-    private String nome;
+    private String nome; // nome do produto
 
     @Column(name = "descricao", columnDefinition = "TEXT")
-    private String descricao;
+    private String descricao; // descricao do produto
 
     @Column(name = "preco_unitario", nullable = false)
-    private Double precoUnitario;
+    private Double precoUnitario; // preco unitario
 
     @Column(name = "quantidade_estoque", nullable = false)
-    private Integer quantidadeEstoque = 0;
+    private Integer quantidadeEstoque = 0; // quantidade em estoque
 
-    @ManyToOne
-    @JoinColumn(name = "id_categoria")
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "id_categoria", nullable = true)
     @com.fasterxml.jackson.annotation.JsonIgnoreProperties("produtos")
-    private Categoria categoria;
+    private Categoria categoria; // categoria opcional
 
-    @ManyToOne
-    @JoinColumn(name = "id_fornecedor")
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "id_fornecedor", nullable = true)
     @com.fasterxml.jackson.annotation.JsonIgnoreProperties("produtos")
-    private Fornecedor fornecedor;
+    private Fornecedor fornecedor; // fornecedor opcional
 
-    // Getters e Setters
+    // getters e setters
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
     public String getNome() { return nome; }
