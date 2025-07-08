@@ -2,6 +2,7 @@
 async function fetchAPI(endpoint, options = {}) {
     const res = await fetch(endpoint, options);
     if (!res.ok) throw new Error(await res.text());
+    if (res.status === 204) return null;
     return res.json();
 }
 
@@ -157,12 +158,31 @@ async function carregarCategorias() {
 }
 
 // VENDAS
+// Carregar clientes no select do formulário de venda
+async function preencherSelectClientes() {
+    const select = document.getElementById('venda-cliente');
+    select.innerHTML = '<option value="">Selecione</option>';
+    try {
+        const clientes = await fetchAPI('/api/clientes');
+        clientes.forEach(c => {
+            const opt = document.createElement('option');
+            opt.value = c.id;
+            opt.textContent = c.nome;
+            select.appendChild(opt);
+        });
+    } catch (e) {
+        select.innerHTML = '<option value="">Erro ao carregar clientes</option>';
+    }
+}
+
 function abrirModalVenda(venda = null) {
-    document.getElementById('modal-venda').style.display = 'flex';
-    document.getElementById('modal-venda-title').innerText = venda ? 'Editar Venda' : 'Adicionar Venda';
-    document.getElementById('venda-id').value = venda ? venda.id : '';
-    document.getElementById('venda-id-cliente').value = venda && venda.cliente ? venda.cliente.id : '';
-    document.getElementById('venda-valor-total').value = venda ? venda.valorTotal : '';
+    preencherSelectClientes().then(() => {
+        document.getElementById('modal-venda').style.display = 'flex';
+        document.getElementById('modal-venda-title').innerText = venda ? 'Editar Venda' : 'Adicionar Venda';
+        document.getElementById('venda-id').value = venda ? venda.id : '';
+        document.getElementById('venda-cliente').value = venda && venda.cliente ? venda.cliente.id : '';
+        document.getElementById('venda-valor-total').value = venda ? venda.valorTotal : '';
+    });
 }
 function fecharModalVenda() {
     document.getElementById('modal-venda').style.display = 'none';
@@ -173,8 +193,9 @@ document.getElementById('modal-venda').onclick = (e) => { if (e.target.classList
 document.getElementById('form-venda').onsubmit = async function (e) {
     e.preventDefault();
     const id = document.getElementById('venda-id').value;
+    const clienteId = document.getElementById('venda-cliente').value;
     const venda = {
-        cliente: { id: parseInt(document.getElementById('venda-id-cliente').value) },
+        cliente: clienteId ? { id: parseInt(clienteId) } : null,
         valorTotal: parseFloat(document.getElementById('venda-valor-total').value)
     };
     try {
@@ -246,8 +267,25 @@ async function preencherSelectCategorias() {
     }
 }
 
+// Carregar fornecedores no select do formulário de produto
+async function preencherSelectFornecedores() {
+    const select = document.getElementById('produto-fornecedor');
+    select.innerHTML = '<option value="">Nenhum</option>';
+    try {
+        const fornecedores = await fetchAPI('/api/fornecedores');
+        fornecedores.forEach(f => {
+            const opt = document.createElement('option');
+            opt.value = f.id;
+            opt.textContent = f.nome;
+            select.appendChild(opt);
+        });
+    } catch (e) {
+        select.innerHTML = '<option value="">Erro ao carregar fornecedores</option>';
+    }
+}
+
 function abrirModalProduto(produto = null) {
-    preencherSelectCategorias().then(() => {
+    Promise.all([preencherSelectCategorias(), preencherSelectFornecedores()]).then(() => {
         document.getElementById('modal-produto').style.display = 'flex';
         document.getElementById('modal-produto-title').innerText = produto ? 'Editar Produto' : 'Adicionar Produto';
         document.getElementById('produto-id').value = produto ? produto.id : '';
@@ -256,6 +294,7 @@ function abrirModalProduto(produto = null) {
         document.getElementById('produto-preco').value = produto ? produto.precoUnitario : '';
         document.getElementById('produto-estoque').value = produto ? produto.quantidadeEstoque : '';
         document.getElementById('produto-categoria').value = produto && produto.categoria ? produto.categoria.id : '';
+        document.getElementById('produto-fornecedor').value = produto && produto.fornecedor ? produto.fornecedor.id : '';
     });
 }
 
@@ -269,12 +308,15 @@ document.getElementById('modal-produto').onclick = (e) => { if (e.target.classLi
 document.getElementById('form-produto').onsubmit = async function (e) {
     e.preventDefault();
     const id = document.getElementById('produto-id').value;
+    const categoriaId = document.getElementById('produto-categoria').value;
+    const fornecedorId = document.getElementById('produto-fornecedor').value;
     const produto = {
         nome: document.getElementById('produto-nome').value,
         descricao: document.getElementById('produto-descricao').value,
         precoUnitario: parseFloat(document.getElementById('produto-preco').value),
         quantidadeEstoque: parseInt(document.getElementById('produto-estoque').value),
-        categoria: { id: parseInt(document.getElementById('produto-categoria').value) }
+        categoria: categoriaId ? { id: parseInt(categoriaId) } : null,
+        fornecedor: fornecedorId ? { id: parseInt(fornecedorId) } : null
     };
     try {
         if (id) {
