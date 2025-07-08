@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loja - Sistema de Vendas e Estoque</title>
+    <title>Loja - Estoque</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <header>
-        <h1>Loja - Sistema de Vendas e Estoque</h1>
+        <h1>Loja - Sistema de Estoque</h1>
         <nav>
             <a href="#produtos">Produtos</a>
             <a href="#clientes">Clientes</a>
@@ -67,7 +67,7 @@
                 <h3 id="modal-venda-title">Adicionar Venda</h3>
                 <form id="form-venda">
                     <input type="hidden" id="venda-id">
-                    <label>ID Cliente:<br><input type="number" id="venda-id-cliente" required></label><br>
+                    <label>Cliente:<br><select id="venda-cliente" required></select></label><br>
                     <label>Valor Total:<br><input type="number" id="venda-valor-total" step="0.01" required></label><br>
                     <button type="submit">Salvar</button>
                 </form>
@@ -119,7 +119,12 @@
                 <input type="hidden" id="produto-id">
                 <label>Nome:<br><input type="text" id="produto-nome" required></label><br>
                 <label>Descrição:<br><input type="text" id="produto-descricao"></label><br>
-                <label>Categoria:<br><select id="produto-categoria" required></select></label><br>
+                <label>Categoria:<br><select id="produto-categoria">
+                        <option value="">Nenhuma</option>
+                    </select></label><br>
+                <label>Fornecedor:<br><select id="produto-fornecedor">
+                        <option value="">Nenhum</option>
+                    </select></label><br>
                 <label>Preço Unitário:<br><input type="number" id="produto-preco" step="0.01" required></label><br>
                 <label>Quantidade em Estoque:<br><input type="number" id="produto-estoque" required></label><br>
                 <button type="submit">Salvar</button>
