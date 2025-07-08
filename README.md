@@ -18,7 +18,7 @@ Oferecer um sistema robusto para:
 ## Tecnologias Utilizadas
 
 - **Java 17+**
-- **Spring Boot**
+- **Spring Boot 3**
 - **Spring Data JPA**
 - **MySQL**
 - **Maven**
@@ -39,14 +39,16 @@ Oferecer um sistema robusto para:
 
 - CRUD completo para:
   - Categorias
-  - Fornecedores
-  - Produtos (com vínculo obrigatório a categoria e fornecedor)
+  - Fornecedores (opcional em Produto)
+  - Produtos (categoria e fornecedor opcionais)
   - Clientes
-  - Funcionários
+  - Funcionários (opcional em Venda)
 - Registro e consulta de vendas e itens
 - Atualização automática de estoque ao registrar vendas
 - Relacionamentos JPA mapeados e serialização JSON ajustada
 - Relatórios e agrupamento de produtos por categoria
+- Validação de integridade referencial (não permite remover produtos vinculados a vendas)
+- Frontend com selects para clientes, categorias e fornecedores, evitando erros de integridade
 
 ---
 
@@ -81,35 +83,36 @@ Oferecer um sistema robusto para:
 
 ### 4. Acessar o Frontend
 
-- Após iniciar o backend, abra o arquivo `src/main/resources/static/index.html` no navegador ou [http://localhost:8080](http://localhost:8080)
+- Após iniciar o backend, abra o arquivo `src/main/resources/static/index.html` no navegador ou acesse [http://localhost:8080](http://localhost:8080)
 - O frontend consome os endpoints REST e permite testar cadastros, edições e consultas
-- Certifique-se de preencher todos os campos obrigatórios (categoria e fornecedor ao cadastrar produto)
+- Certifique-se de preencher todos os campos obrigatórios
+- O frontend exibe selects para clientes, categorias e fornecedores, evitando IDs inválidos
 
 ### 5. Testar Endpoints Manualmente
 
 - Use ferramentas como **Postman** ou **Insomnia** para testar os endpoints REST
 - Exemplos:
-  - `GET /produtos` — lista produtos
-  - `POST /produtos` — cadastra produto (enviando JSON com categoria e fornecedor)
-  - `GET /vendas` — lista vendas
+  - `GET /api/produtos` — lista produtos
+  - `POST /api/clientes` — cadastra cliente
+  - `POST /api/vendas` — cadastra venda (cliente obrigatório)
+  - `DELETE /api/fornecedores/{id}` — remove fornecedor
 
 ### 6. Dicas de Teste e Integração
 
 - O frontend já está preparado para enviar os dados no formato correto (JSON)
-- Se necessário, ajuste o JS (`app.js`) para garantir o envio de categoria e fornecedor ao salvar produtos
 - Todos os relacionamentos estão ajustados para evitar recursão infinita no JSON
-- O backend valida a existência de categoria/fornecedor ao salvar produtos
+- O backend valida a existência de cliente ao salvar vendas e impede remoção de produtos vinculados a vendas
 
 ---
 
 ## Exemplos de Endpoints
 
-| Método | URL                  | Descrição                   |
-|--------|----------------------|-----------------------------|
-| GET    | `/produtos`          | Lista todos os produtos      |
-| POST   | `/clientes`          | Cadastra um novo cliente     |
-| PUT    | `/vendas/{id}`       | Atualiza uma venda existente |
-| DELETE | `/fornecedores/{id}` | Remove um fornecedor         |
+| Método | URL                        | Descrição                        |
+|--------|----------------------------|----------------------------------|
+| GET    | `/api/produtos`            | Lista todos os produtos          |
+| POST   | `/api/clientes`            | Cadastra um novo cliente         |
+| POST   | `/api/vendas`              | Cadastra uma nova venda          |
+| DELETE | `/api/fornecedores/{id}`   | Remove um fornecedor             |
 
 ---
 
