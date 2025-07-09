@@ -4,17 +4,6 @@ Este projeto é uma **API RESTful** desenvolvida em **Java** com **Spring Boot**
 
 ---
 
-## Objetivo
-
-Oferecer um sistema robusto para:
-- Gerenciamento de produtos, categorias e fornecedores
-- Cadastro de clientes e funcionários
-- Controle de vendas e itens de venda
-- Atualização automática de estoque
-- Relatórios e agrupamento por categoria
-
----
-
 ## Tecnologias Utilizadas
 
 - **Java 17+**
